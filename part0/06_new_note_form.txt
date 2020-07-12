@@ -1,0 +1,13 @@
+title 0.6 New note form
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note right of browser:
+Content-type: application/JSON
+{content: "test", date: "2020-07-12T12:25:51.471Z"}
+end note
+server-->browser: {"message":"note created"}
+note over browser:
+detected new note,
+append new note into 
+HTML forms to render
+end note
