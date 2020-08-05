@@ -17,9 +17,8 @@ const Statistics = (props) => {
     return (props.good*100)/getCount()
   }
 
-  return (
-    <div>
-      <h1>statistics</h1>
+  if (getCount())  {
+    return (
       <div>
         <p>good {props.good}</p>
         <p>neutral {props.neutral}</p>
@@ -28,9 +27,12 @@ const Statistics = (props) => {
         <p>average {getAverage()}</p>
         <p>positive {getPositive()}</p>
       </div>
-    </div>
-  )
-
+    )
+  } else {
+    return (<div>
+      <p>No feedback given</p>
+    </div>)
+  }
 }
 const App = () => {
   // save clicks of each button to own state
@@ -55,6 +57,7 @@ const App = () => {
             bad
         </button>
       </div>
+      <h1>statistics</h1>
       <Statistics
         good={good}
         neutral={neutral}
