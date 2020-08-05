@@ -1,6 +1,27 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Button = (props) => {
+  const {handleClick, label} = props
+
+  return <button onClick={handleClick} >{label}</button>
+}
+
+const Anecdote = (props) => {
+  const {index, anecdote, points} = props
+
+  return (
+    <>
+      <div>
+        {anecdote}
+      </div>
+      <div>
+        <p>has {points[index]} {points[index] > 1 ? "votes" : "vote"}</p>
+      </div>
+    </>
+  )
+}
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(props.anecdotes.map(p => 0))
@@ -14,22 +35,31 @@ const App = (props) => {
     setPoints(copy)
   }
 
+  const findMaxIndex = () => {
+    let index = points.findIndex(p => p === Math.max(...points))
+    return index
+  }
+
   return (
     <>
+      <h1>Anecdote of the day</h1>
+      <Anecdote
+        index={selected}
+        anecdote={props.anecdotes[selected]}
+        points={points} />
       <div>
-        {props.anecdotes[selected]}
+        <Button
+          handleClick={() => addVote()}
+          label="vote" />
+        <Button 
+          handleClick={() => setSelected(getRandomInt(props.anecdotes.length))}
+          label="next anecdote" /> 
       </div>
-      <div>
-        <p>has {points[selected]} votes</p>
-      </div>
-      <div>
-        <button
-          onClick={() => addVote()}>vote</button>
-        <button 
-          onClick={() => setSelected(getRandomInt(props.anecdotes.length))}> 
-          next anecdote
-        </button>
-      </div>
+      <h1>Anecdote with the most votes</h1>
+      <Anecdote
+        index={findMaxIndex()}
+        anecdote={props.anecdotes[findMaxIndex()]}
+        points={points} />
     </>
   )
 }
