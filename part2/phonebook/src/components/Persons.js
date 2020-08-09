@@ -8,7 +8,7 @@ const Person = ({ person }) => {
     )
 }
 
-const Contacts = ( {contacts} ) => {
+const Persons = ( {contacts} ) => {
     return (
         <div>
             {contacts.map(person => <Person key={person.id} person={person} />)}
@@ -16,4 +16,4 @@ const Contacts = ( {contacts} ) => {
     )
 }
 
-export default Contacts
+export default Persons
