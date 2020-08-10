@@ -28,13 +28,12 @@ const App = () => {
 
   const dynamicSearch = (term) => {
     let results = []
-    if (term)
-      results = countries.filter(country => country.name.toLowerCase().includes(term))
-    
-    if (results.length < 11)
-      return results
-    
-    return []
+    if (term) {
+      let fil = countries.filter(country => country.name.toLowerCase().includes(term))
+      if (fil.length < 11)
+        results = fil
+    }    
+    return results
   }
 
   return (
@@ -42,7 +41,8 @@ const App = () => {
       <Filter
         searchTerm={searchTerm}
         handleSearch={handleTermChange} />
-      <Countries countries={dynamicSearch(searchTerm)} />
+      <Countries 
+        countries={dynamicSearch(searchTerm)} />
     </div>
   )
 }
