@@ -6,14 +6,13 @@ import Countries from './components/Countries'
 const App = () => {
   const [ countries, setCountries ] = useState([])
   const [ searchTerm, setSearchTerm ] = useState('')
-    
+
   const hook = () => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(
         response => {
           setCountries(response.data)
-          console.log(response.data)
         },
         error => {
           console.log('Error')
