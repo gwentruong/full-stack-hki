@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import Persons from './components/Persons'
+import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -10,20 +10,13 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterText, setFilterText ] = useState('')
 
-  const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(
-        response => {
-          setPersons(response.data)
-        },
-        error => {
-          console.log('Error')
-        }
-      )
-  }
-
-  useEffect(hook, [])
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(initialContacts => {
+        setPersons(initialContacts)
+      })
+  }, [])
 
   const addContact = (event) => {
     event.preventDefault()
@@ -38,15 +31,14 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    setPersons([...persons, personObject])
-    setNewName('')
-    setNewNumber('')
-  }
 
-  const dynamicSearch = (text) => {
-    if (text) 
-      return persons.filter(p => p.name.includes(text))
-    return persons
+    personService
+      .create(personObject)
+      .then(returnedContact => {
+        setPersons(persons.concat(returnedContact))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   const handleNameChange = (event) => {
@@ -61,6 +53,10 @@ const App = () => {
     setFilterText(event.target.value)
   }
 
+  let dynamicContacts = persons
+  
+  if (filterText) 
+    dynamicContacts = persons.filter(p => p.name.includes(filterText))  
 
   return (
     <div>
@@ -76,7 +72,9 @@ const App = () => {
         handleNumber={handleNumberChange}
         addContact={addContact} />
       <h2>Numbers</h2>
-      <Persons contacts={dynamicSearch(filterText)} />
+      <div>
+        {dynamicContacts.map(person => <Person key={person.id} person={person}/>)}
+      </div>
     </div>
   )
 }
