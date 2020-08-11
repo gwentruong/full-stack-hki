@@ -45,12 +45,15 @@ const App = () => {
 
   const deleteContact = (id) => {
     let updatedList = persons.filter(p => p.id !== id)
+    let name = persons.find(p => p.id === id).name
 
-    personService
-      .remove(id)
-      .then(() => {
-        setPersons(updatedList)
-      })    
+    if (window.confirm(`Delete ${name}?`)) {
+        personService
+          .remove(id)
+          .then(() => {
+            setPersons(updatedList)
+          })  
+    }
   }
 
   const handleNameChange = (event) => {
