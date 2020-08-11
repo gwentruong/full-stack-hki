@@ -33,6 +33,14 @@ const App = () => {
         personService
           .update(changedPerson.id, changedPerson)
           .then(updatedPerson => {
+            setNotiMsg({
+              message: `Updated infomation of ${updatedPerson.name}`,
+              type: "success"
+            })
+            setTimeout(() => {
+              setNotiMsg(null)
+            }, 3000)
+
             setPersons(persons.map(p => p.id !== updatedPerson.id ? p : updatedPerson))
           }) 
       }
@@ -50,7 +58,9 @@ const App = () => {
     personService
       .create(personObject)
       .then(returnedContact => {
-        setNotiMsg(`Added ${returnedContact.name}`)
+        setNotiMsg({
+          message: `Added ${returnedContact.name}`,
+          type: "success"})
         setTimeout(() => {
           setNotiMsg(null)
         }, 3000)
@@ -69,6 +79,25 @@ const App = () => {
         personService
           .remove(id)
           .then(() => {
+            setNotiMsg({
+              message: `Removed infomation of ${name}`,
+              type: "success"
+            })
+            setTimeout(() => {
+              setNotiMsg(null)
+            }, 3000)
+
+            setPersons(updatedList)
+          })
+          .catch(error => {
+            setNotiMsg({
+              message: `Infomation of ${name} has already removed from server`,
+              type: "error"
+            })
+            setTimeout(() => {
+              setNotiMsg(null)
+            }, 3000)
+
             setPersons(updatedList)
           })  
     }
