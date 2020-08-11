@@ -26,8 +26,10 @@ const App = () => {
       return
     }
 
+    const max = Math.max.apply(null, persons.map(item => item.id))
+
     const personObject = {
-      id: persons.length + 1,
+      id: max + 1,
       name: newName,
       number: newNumber
     }
@@ -39,6 +41,16 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+  }
+
+  const deleteContact = (id) => {
+    let updatedList = persons.filter(p => p.id !== id)
+
+    personService
+      .remove(id)
+      .then(() => {
+        setPersons(updatedList)
+      })    
   }
 
   const handleNameChange = (event) => {
@@ -73,7 +85,10 @@ const App = () => {
         addContact={addContact} />
       <h2>Numbers</h2>
       <div>
-        {dynamicContacts.map(person => <Person key={person.id} person={person}/>)}
+        {dynamicContacts.map(person => <Person 
+                                          key={person.id} 
+                                          person={person}
+                                          deleteContact={() => deleteContact(person.id)} />)}
       </div>
     </div>
   )

@@ -1,19 +1,12 @@
 import React from 'react'
 
-const Person = ({ person }) => {
+const Person = ({ person, deleteContact }) => {
     return (
         <div>
-            {person.name} {person.number}
+            {person.name} {person.number} <button onClick={deleteContact}>delete</button>
+
         </div>
     )
 }
-
-// const Persons = ( {contacts} ) => {
-//     return (
-//         <div>
-//             {contacts.map(person => <Person key={person.id} person={person} />)}
-//         </div>
-//     )
-// }
 
 export default Person
