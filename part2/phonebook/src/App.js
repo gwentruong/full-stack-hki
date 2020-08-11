@@ -22,7 +22,17 @@ const App = () => {
     event.preventDefault()
 
     if (persons.findIndex(p => p.name === newName) > -1) {
-      window.alert(`${newName} is already added to phonebook`)
+      const existedPerson = persons.find(p => p.name === newName)
+      const changedPerson = {...existedPerson, number: newNumber}
+      const msg = `${newName} is already added to phonebook, replace the old number with the new one?`
+      
+      if (window.confirm(msg)) {
+        personService
+          .update(changedPerson.id, changedPerson)
+          .then(updatedPerson => {
+            setPersons(persons.map(p => p.id !== updatedPerson.id ? p : updatedPerson))
+          }) 
+      }
       return
     }
 
